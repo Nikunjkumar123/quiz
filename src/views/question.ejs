@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+        ul {
+            padding: 0;
+            margin: 0 auto;
+            width: 80%;
+            max-width: 600px;
+        }
+        li {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .tick {
+            margin-right: 5px;
+            display: none;
+        }
+        .selected .tick {
+            display: inline-block;
+            color: green;
+        }
+        .selected {
+            border: 2px solid #28a745;
+        }
+        li.correct {
+            color: #28a745;
+        }
+        .score-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .score-button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1> 9 Questions</h1>
+    <ul id="questionsList">
+        <% questions.forEach((question, index) => { %>
+            <li><%= index + 1 %>. <%= question.descriptive %></li>
+            <ul>
+                <% question.alternative.forEach((option, index) => { %>
+                    <% if (index === 4) { %>
+                        <li data-index="<%= index %>" class="option hidden"><span class="tick">&#10003;</span><%= index + 1 %>. <%= option.text %> (Answer)</li>
+                    <% } else { %>
+                        <li data-index="<%= index %>" class="option"><span class="tick">&#10003;</span><%= index + 1 %>. <%= option.text %></li>
+                    <% } %>
+                <% }); %>
+            </ul>
+        <% }); %>
+    </ul>
+
+    <button id="expandButton" class="score-button">Expand Answer</button>
+    <button id="scoreButton" class="score-button">Calculate Score</button>
+
+    <script>
+        // JavaScript for handling option selection and score calculation
+        const options = document.querySelectorAll('.option');
+        const expandButton = document.getElementById('expandButton');
+        const scoreButton = document.getElementById('scoreButton');
+        let score = 0;
+        let answerIndex = 4;
+        let answerText = '';
+
+        expandButton.addEventListener('click', () => {
+            const fifthAnswer = document.querySelector('.option.hidden');
+            fifthAnswer.classList.toggle('hidden');
+            expandButton.textContent = fifthAnswer.classList.contains('hidden') ? 'Expand Answer' : 'Hide Answer';
+        });
+
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                if (!option.classList.contains('selected')) {
+                    option.classList.add('selected');
+                    if (option.textContent.trim() === answerText) {
+                        option.classList.add('correct');
+                        score++;
+                    }
+                }
+            });
+        });
+
+        scoreButton.addEventListener('click', () => {
+            alert('Your score is: ' + score);
+        });
+
+        answerText = document.querySelector('.option.hidden').textContent.trim();
+    </script>
+</body>
+</html>

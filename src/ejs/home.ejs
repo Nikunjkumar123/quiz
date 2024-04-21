@@ -1,0 +1,27 @@
+<!-- index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz App</h1>
+        <div id="question-container">
+            <p id="question"><%= question.descriptive %></p>
+            <ul id="options">
+                <% question.alternative.forEach(function(option) { %>
+                    <li><%= option.text %></li>
+                <% }); %>
+            </ul>
+        </div>
+        <button id="next-btn">Next Question</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
